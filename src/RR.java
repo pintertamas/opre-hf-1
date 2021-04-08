@@ -6,16 +6,14 @@ public class RR {
     private final ArrayDeque<Task> taskQueue;
     private final ArrayList<Task> completedTasks;
     private int runTime;
-    private boolean alreadyPostponed;
-    private boolean shouldNotPostpone;
+    private boolean isActive;
 
     public RR(int timeSlice) {
         this.timeSlice = timeSlice;
         this.taskQueue = new ArrayDeque<>();
         this.completedTasks = new ArrayList<>();
         this.runTime = 0;
-        this.alreadyPostponed = false;
-        this.shouldNotPostpone = true;
+        this.isActive = false;
     }
 
     public void addTask(Task newTask) {
@@ -38,14 +36,18 @@ public class RR {
     }
 
     public void run() {
-        alreadyPostponed = false;
+        if (runTime == timeSlice) {
+            postpone();
+        }
+        this.isActive = true;
+
         for (Task task : taskQueue) {
             task.tick();
         }
 
-        String currentTaskId = taskQueue.getFirst().getId();
+        //System.out.println("RR current task: " + taskQueue.getFirst().getId());
 
-        System.out.println("RR current task: " + currentTaskId);
+        Main.putInOrder(taskQueue.getFirst().getId());
 
         taskQueue.getFirst().process();
         runTime++;
@@ -53,28 +55,10 @@ public class RR {
         if (taskQueue.getFirst().getCpuTime() == 0) {
             completedTasks.add(taskQueue.pop());
             runTime = 0;
-        } else if (runTime == timeSlice) {
-            postpone();
         }
-
-        if (taskQueue.isEmpty())
-            shouldNotPostpone = true;
-        Main.putInOrder(currentTaskId);
     }
 
     public ArrayList<Task> getCompletedTasks() {
         return completedTasks;
-    }
-
-    public boolean isAlreadyPostponed() {
-        return alreadyPostponed;
-    }
-
-    public boolean shouldNotPostpone() {
-        return shouldNotPostpone && runTime == 0;
-    }
-
-    public void setShouldNotPostpone(boolean shouldNotPostpone) {
-        this.shouldNotPostpone = shouldNotPostpone;
     }
 }

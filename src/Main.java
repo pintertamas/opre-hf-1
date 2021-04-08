@@ -25,7 +25,6 @@ public class Main {
                     tasks.remove(0);
                 }
             }
-
             if (sjf.isNotEmpty()) {
                 sjf.run();
                 rr.waitForResume();
@@ -33,7 +32,6 @@ public class Main {
                     rr.postpone();
             } else if (rr.isNotEmpty()) {
                 rr.run();
-                rr.setShouldNotPostpone(false);
             }
             runTime++;
         }
@@ -81,7 +79,7 @@ public class Main {
     public static void putInOrder(String taskId) {
         if (order.size() == 0)
             order.add(taskId);
-        else //if (!order.get(order.size() - 1).equals(taskId))
+        else if (!order.get(order.size() - 1).equals(taskId))
             order.add(taskId);
     }
 }

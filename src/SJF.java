@@ -4,6 +4,7 @@ public class SJF {
     private final ArrayList<Task> taskQueue = new ArrayList<>();
     private final ArrayList<Task> completedTasks = new ArrayList<>();
     private Task currentTask = new Task("", -1, -1, 0, -1);
+    private boolean newTaskStarted;
 
     public void addTask(Task task) {
         this.taskQueue.add(task);
@@ -19,23 +20,24 @@ public class SJF {
     }
 
     public void run() {
-        if (currentTask.getCpuTime() == 0)
+        if (currentTask.getCpuTime() == 0) {
             currentTask = findShortest();
+            newTaskStarted = true;
+        }
 
-        System.out.println("SJF current task: " + currentTask.getId());
+        //System.out.println("SJF current task: " + currentTask.getId());
+
+        Main.putInOrder(currentTask.getId());
 
         for (Task task : taskQueue) {
             task.tick();
         }
-
-        String currentTaskId = currentTask.getId();
         currentTask.process();
 
         if (currentTask.getCpuTime() == 0) {
             taskQueue.remove(currentTask);
             completedTasks.add(currentTask);
         }
-        Main.putInOrder(currentTaskId);
     }
 
     public boolean isNotEmpty() {
@@ -44,5 +46,9 @@ public class SJF {
 
     public ArrayList<Task> getCompletedTasks() {
         return completedTasks;
+    }
+
+    public boolean newTaskStarted() {
+        return newTaskStarted;
     }
 }
