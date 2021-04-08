@@ -17,19 +17,18 @@ public class Main {
             while (tasks.size() != 0 && tasks.get(0).getStartTime() == runTime) {
                 if (tasks.get(0).getPriority() == 1) {
                     sjf.addTask(tasks.get(0));
-                    System.out.println("Task added! " + tasks.get(0).getId());
+//                    System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 } else if (tasks.get(0).getPriority() == 0) {
                     rr.addTask(tasks.get(0));
-                    System.out.println("Task added! " + tasks.get(0).getId());
+//                    System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 }
             }
             if (sjf.isNotEmpty()) {
+                rr.postpone();
                 sjf.run();
                 rr.waitForResume();
-                if (rr.isNotEmpty() && !rr.isAlreadyPostponed() && !rr.shouldNotPostpone())
-                    rr.postpone();
             } else if (rr.isNotEmpty()) {
                 rr.run();
             }

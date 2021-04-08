@@ -21,9 +21,12 @@ public class RR {
     }
 
     public void postpone() {
-        this.taskQueue.add(this.taskQueue.pop());
-        alreadyPostponed = true;
-        runTime = 0;
+        if (this.isActive) {
+//            System.out.println("Postponed!");
+            this.taskQueue.add(this.taskQueue.pop());
+            this.runTime = 0;
+            this.isActive = false;
+        }
     }
 
     public void waitForResume() {
