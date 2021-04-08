@@ -4,7 +4,6 @@ public class SJF {
     private final ArrayList<Task> taskQueue = new ArrayList<>();
     private final ArrayList<Task> completedTasks = new ArrayList<>();
     private Task currentTask = new Task(0);
-    private boolean newTaskStarted;
 
     public void addTask(Task task, int number) {
         task.setNumber(number);
@@ -24,7 +23,6 @@ public class SJF {
     public void run() {
         if (currentTask.getCpuTime() == 0) {
             currentTask = findShortest();
-            newTaskStarted = true;
         }
 
         Main.putInOrder(currentTask.getId());
@@ -46,9 +44,5 @@ public class SJF {
 
     public ArrayList<Task> getCompletedTasks() {
         return completedTasks;
-    }
-
-    public boolean newTaskStarted() {
-        return newTaskStarted;
     }
 }
