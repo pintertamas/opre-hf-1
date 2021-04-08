@@ -58,6 +58,7 @@ public class RR {
         if (taskQueue.getFirst().getCpuTime() == 0) {
             completedTasks.add(taskQueue.pop());
             runTime = 0;
+            this.isActive = false;
         }
     }
 
