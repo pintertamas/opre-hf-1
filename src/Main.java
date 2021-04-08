@@ -15,7 +15,8 @@ public class Main {
         int roundCount = 0;
 
         while (tasks.size() != 0 || rr.isNotEmpty() || sjf.isNotEmpty()) {
-            while (tasks.size() != 0 && tasks.get(0).getStartTime() == runTime) {
+            //System.out.println("runtime= " + roundCount);
+            while (tasks.size() != 0 && tasks.get(0).getStartTime() == roundCount) {
                 if (tasks.get(0).getPriority() == 1) {
                     sjf.addTask(tasks.get(0));
                     //System.out.println("Task added! " + tasks.get(0).getId());
@@ -25,12 +26,18 @@ public class Main {
                     //System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 }
+                /*System.out.println("task.size(): " + tasks.size());
+                System.out.println("task.size() != 0: " + (tasks.size() != 0));
+                System.out.println("tasks.get(0).getStartTime(): " + tasks.get(0).getStartTime());
+                System.out.println("tasks.get(0).getStartTime() == roundCount: " + (tasks.get(0).getStartTime() == roundCount));*/
             }
             if (sjf.isNotEmpty()) {
+                //System.out.println("SFJ");
                 rr.postpone();
                 sjf.run();
                 rr.waitForResume();
             } else if (rr.isNotEmpty()) {
+                //System.out.println("RR");
                 rr.run();
             }
             roundCount++;
@@ -74,6 +81,8 @@ public class Main {
 
             taskList.add(new Task(id, priority, startTime, burstLength, i.getAndIncrement()));
         });
+
+        taskList.sort(new CustomComparator());
         return taskList;
     }
 

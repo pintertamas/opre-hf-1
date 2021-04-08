@@ -14,8 +14,10 @@ public class SJF {
         Task shortest = new Task(Integer.MAX_VALUE);
         //System.out.println(taskQueue.size());
         for (Task task : taskQueue) {
-            if (task.getCpuTime() < shortest.getCpuTime())
+            if (task.getCpuTime() < shortest.getCpuTime()) {
                 shortest = task;
+                //System.out.println("New shortest: " + task.getCpuTime());
+            }
         }
         return shortest;
     }
