@@ -21,6 +21,9 @@ public class SJF {
     public void run() {
         if (currentTask.getCpuTime() == 0)
             currentTask = findShortest();
+
+        System.out.println("SJF current task: " + currentTask.getId());
+
         for (Task task : taskQueue) {
             task.tick();
         }

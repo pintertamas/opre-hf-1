@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static final ArrayList<String> order = new ArrayList<>();
-    static int runTime = 0;
+    public static int runTime = 0;
 
     public static void main(String[] args) {
         ArrayList<Task> tasks = scanTasks();
@@ -17,9 +17,11 @@ public class Main {
             while (tasks.size() != 0 && tasks.get(0).getStartTime() == runTime) {
                 if (tasks.get(0).getPriority() == 1) {
                     sjf.addTask(tasks.get(0));
+                    System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 } else if (tasks.get(0).getPriority() == 0) {
                     rr.addTask(tasks.get(0));
+                    System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 }
             }
@@ -79,7 +81,7 @@ public class Main {
     public static void putInOrder(String taskId) {
         if (order.size() == 0)
             order.add(taskId);
-        else if (!order.get(order.size() - 1).equals(taskId))
+        else //if (!order.get(order.size() - 1).equals(taskId))
             order.add(taskId);
     }
 }

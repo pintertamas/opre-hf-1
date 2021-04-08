@@ -44,6 +44,9 @@ public class RR {
         }
 
         String currentTaskId = taskQueue.getFirst().getId();
+
+        System.out.println("RR current task: " + currentTaskId);
+
         taskQueue.getFirst().process();
         runTime++;
 

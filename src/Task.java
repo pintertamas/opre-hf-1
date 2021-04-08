@@ -4,7 +4,7 @@ public class Task implements Comparable<Task> {
     private final int startTime;
     private int cpuTime;
     private int waitTime;
-    private int number;
+    private final int number;
 
     public Task(String id, int priority, int startTime, int cpuTime, int number) {
         this.id = id;
