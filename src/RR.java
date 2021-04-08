@@ -27,6 +27,7 @@ public class RR {
                 this.taskQueue.add(this.taskQueue.pop());
             this.runTime = 0;
             this.isActive = false;
+            System.out.println("postponed");
         }
     }
 
@@ -62,5 +63,9 @@ public class RR {
 
     public ArrayList<Task> getCompletedTasks() {
         return completedTasks;
+    }
+
+    public ArrayDeque<Task> getTasks() {
+        return taskQueue;
     }
 }

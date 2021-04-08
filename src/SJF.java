@@ -51,6 +51,4 @@ public class SJF {
     public boolean newTaskStarted() {
         return newTaskStarted;
     }
-
-
 }

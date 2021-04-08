@@ -33,6 +33,12 @@ public class Main {
                 rr.run();
             }
             roundCount++;
+
+            for (Task task : rr.getTasks()) {
+                System.out.print(task.getId());
+            }
+            System.out.println();
+
         }
 
         for (String string : order) {
@@ -61,7 +67,6 @@ public class Main {
                 lines.add(nextLine);
             else break;
         }
-        AtomicInteger i = new AtomicInteger();
         lines.forEach(line -> {
             String[] parameters = line.split(",");
             if (parameters.length != 4) return;
@@ -80,7 +85,7 @@ public class Main {
     public static void putInOrder(String taskId) {
         if (order.size() == 0)
             order.add(taskId);
-        else if (!order.get(order.size() - 1).equals(taskId))
+        else //if (!order.get(order.size() - 1).equals(taskId))
             order.add(taskId);
     }
 
