@@ -27,7 +27,6 @@ public class RR {
                 this.taskQueue.add(this.taskQueue.pop());
             this.runTime = 0;
             this.isActive = false;
-            System.out.println("postponed");
         }
     }
 
