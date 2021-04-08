@@ -15,6 +15,15 @@ public class Task implements Comparable<Task> {
         this.number = number;
     }
 
+    public Task(int cpuTime) {
+        this.id = "";
+        this.priority = -1;
+        this.startTime = -1;
+        this.cpuTime = cpuTime;
+        this.waitTime = 0;
+        this.number = -1;
+    }
+
     public void tick() {
         this.waitTime++;
     }

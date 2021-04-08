@@ -1,27 +1,28 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static final ArrayList<String> order = new ArrayList<>();
-    public static int runTime = 0;
 
     public static void main(String[] args) {
         ArrayList<Task> tasks = scanTasks();
         ArrayList<Task> completedTasks = new ArrayList<>();
         RR rr = new RR(2);
         SJF sjf = new SJF();
+        int roundCount = 0;
 
         while (tasks.size() != 0 || rr.isNotEmpty() || sjf.isNotEmpty()) {
             while (tasks.size() != 0 && tasks.get(0).getStartTime() == runTime) {
                 if (tasks.get(0).getPriority() == 1) {
                     sjf.addTask(tasks.get(0));
-//                    System.out.println("Task added! " + tasks.get(0).getId());
+                    //System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 } else if (tasks.get(0).getPriority() == 0) {
                     rr.addTask(tasks.get(0));
-//                    System.out.println("Task added! " + tasks.get(0).getId());
+                    //System.out.println("Task added! " + tasks.get(0).getId());
                     tasks.remove(0);
                 }
             }
@@ -32,8 +33,9 @@ public class Main {
             } else if (rr.isNotEmpty()) {
                 rr.run();
             }
-            runTime++;
+            roundCount++;
         }
+        //System.out.println("runtime= " + roundCount);
 
         for (String string : order) {
             System.out.print(string);
@@ -80,5 +82,12 @@ public class Main {
             order.add(taskId);
         else if (!order.get(order.size() - 1).equals(taskId))
             order.add(taskId);
+    }
+
+    public static class CustomComparator implements Comparator<Task> {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return Integer.compare(t1.getStartTime(), t2.getStartTime());
+        }
     }
 }

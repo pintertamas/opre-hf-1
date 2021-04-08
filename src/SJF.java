@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class SJF {
     private final ArrayList<Task> taskQueue = new ArrayList<>();
     private final ArrayList<Task> completedTasks = new ArrayList<>();
-    private Task currentTask = new Task("", -1, -1, 0, -1);
+    private Task currentTask = new Task(0);
     private boolean newTaskStarted;
 
     public void addTask(Task task) {
@@ -11,7 +11,8 @@ public class SJF {
     }
 
     private Task findShortest() {
-        Task shortest = new Task("", -1, -1, Integer.MAX_VALUE, -1);
+        Task shortest = new Task(Integer.MAX_VALUE);
+        //System.out.println(taskQueue.size());
         for (Task task : taskQueue) {
             if (task.getCpuTime() < shortest.getCpuTime())
                 shortest = task;
@@ -22,6 +23,7 @@ public class SJF {
     public void run() {
         if (currentTask.getCpuTime() == 0) {
             currentTask = findShortest();
+            //System.out.println(currentTask.getCpuTime());
             newTaskStarted = true;
         }
 
