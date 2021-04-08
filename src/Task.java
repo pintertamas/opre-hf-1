@@ -4,15 +4,15 @@ public class Task implements Comparable<Task> {
     private final int startTime;
     private int cpuTime;
     private int waitTime;
-    private final int number;
+    private int number;
 
-    public Task(String id, int priority, int startTime, int cpuTime, int number) {
+    public Task(String id, int priority, int startTime, int cpuTime) {
         this.id = id;
         this.priority = priority;
         this.startTime = startTime;
         this.cpuTime = cpuTime;
         this.waitTime = 0;
-        this.number = number;
+        this.number = -1;
     }
 
     public Task(int cpuTime) {
@@ -53,7 +53,16 @@ public class Task implements Comparable<Task> {
         return waitTime;
     }
 
-    public int compareTo(Task task) {
-        return Integer.compare(this.number, task.number);
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        return 0;
     }
 }

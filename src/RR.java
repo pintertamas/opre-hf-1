@@ -16,13 +16,13 @@ public class RR {
         this.isActive = false;
     }
 
-    public void addTask(Task newTask) {
-        this.taskQueue.add(newTask);
+    public void addTask(Task task, int number) {
+        task.setNumber(number);
+        this.taskQueue.add(task);
     }
 
     public void postpone() {
         if (this.isActive) {
-            //System.out.println("Postponed!");
             if (taskQueue.size() > 0)
                 this.taskQueue.add(this.taskQueue.pop());
             this.runTime = 0;
@@ -48,8 +48,6 @@ public class RR {
         for (Task task : taskQueue) {
             task.tick();
         }
-
-        //System.out.println("RR current task: " + taskQueue.getFirst().getId());
 
         Main.putInOrder(taskQueue.getFirst().getId());
 

@@ -13,36 +13,27 @@ public class Main {
         RR rr = new RR(2);
         SJF sjf = new SJF();
         int roundCount = 0;
+        int taskNumber = 0;
 
         while (tasks.size() != 0 || rr.isNotEmpty() || sjf.isNotEmpty()) {
-            //System.out.println("runtime= " + roundCount);
             while (tasks.size() != 0 && tasks.get(0).getStartTime() == roundCount) {
                 if (tasks.get(0).getPriority() == 1) {
-                    sjf.addTask(tasks.get(0));
-                    //System.out.println("Task added! " + tasks.get(0).getId());
+                    sjf.addTask(tasks.get(0), taskNumber++);
                     tasks.remove(0);
                 } else if (tasks.get(0).getPriority() == 0) {
-                    rr.addTask(tasks.get(0));
-                    //System.out.println("Task added! " + tasks.get(0).getId());
+                    rr.addTask(tasks.get(0), taskNumber++);
                     tasks.remove(0);
                 }
-                /*System.out.println("task.size(): " + tasks.size());
-                System.out.println("task.size() != 0: " + (tasks.size() != 0));
-                System.out.println("tasks.get(0).getStartTime(): " + tasks.get(0).getStartTime());
-                System.out.println("tasks.get(0).getStartTime() == roundCount: " + (tasks.get(0).getStartTime() == roundCount));*/
             }
             if (sjf.isNotEmpty()) {
-                //System.out.println("SFJ");
                 rr.postpone();
                 sjf.run();
                 rr.waitForResume();
             } else if (rr.isNotEmpty()) {
-                //System.out.println("RR");
                 rr.run();
             }
             roundCount++;
         }
-        //System.out.println("runtime= " + roundCount);
 
         for (String string : order) {
             System.out.print(string);
@@ -51,11 +42,11 @@ public class Main {
 
         completedTasks.addAll(sjf.getCompletedTasks());
         completedTasks.addAll(rr.getCompletedTasks());
-        Collections.sort(completedTasks);
+        completedTasks.sort(new OrderComparator());
 
         for (Task task : completedTasks) {
             System.out.print(task.getId() + ":" + task.getWaitTime());
-            if(completedTasks.indexOf(task) != completedTasks.size() - 1) System.out.print(',');
+            if (completedTasks.indexOf(task) != completedTasks.size() - 1) System.out.print(',');
         }
     }
 
@@ -64,7 +55,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> lines = new ArrayList<>();
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             String nextLine = scanner.nextLine();
             if (!nextLine.equals(""))
                 lines.add(nextLine);
@@ -73,16 +64,16 @@ public class Main {
         AtomicInteger i = new AtomicInteger();
         lines.forEach(line -> {
             String[] parameters = line.split(",");
-            if(parameters.length != 4) return;
+            if (parameters.length != 4) return;
             String id = parameters[0];
             int priority = Integer.parseInt(parameters[1]);
             int startTime = Integer.parseInt(parameters[2]);
             int burstLength = Integer.parseInt(parameters[3]);
 
-            taskList.add(new Task(id, priority, startTime, burstLength, i.getAndIncrement()));
+            taskList.add(new Task(id, priority, startTime, burstLength));
         });
 
-        taskList.sort(new CustomComparator());
+        taskList.sort(new StartTimeComparator());
         return taskList;
     }
 
@@ -93,10 +84,17 @@ public class Main {
             order.add(taskId);
     }
 
-    public static class CustomComparator implements Comparator<Task> {
+    public static class StartTimeComparator implements Comparator<Task> {
         @Override
         public int compare(Task t1, Task t2) {
             return Integer.compare(t1.getStartTime(), t2.getStartTime());
+        }
+    }
+
+    public static class OrderComparator implements Comparator<Task> {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return Integer.compare(t1.getNumber(), t2.getNumber());
         }
     }
 }

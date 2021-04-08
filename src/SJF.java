@@ -6,17 +6,16 @@ public class SJF {
     private Task currentTask = new Task(0);
     private boolean newTaskStarted;
 
-    public void addTask(Task task) {
+    public void addTask(Task task, int number) {
+        task.setNumber(number);
         this.taskQueue.add(task);
     }
 
     private Task findShortest() {
         Task shortest = new Task(Integer.MAX_VALUE);
-        //System.out.println(taskQueue.size());
         for (Task task : taskQueue) {
             if (task.getCpuTime() < shortest.getCpuTime()) {
                 shortest = task;
-                //System.out.println("New shortest: " + task.getCpuTime());
             }
         }
         return shortest;
@@ -25,11 +24,8 @@ public class SJF {
     public void run() {
         if (currentTask.getCpuTime() == 0) {
             currentTask = findShortest();
-            //System.out.println(currentTask.getCpuTime());
             newTaskStarted = true;
         }
-
-        //System.out.println("SJF current task: " + currentTask.getId());
 
         Main.putInOrder(currentTask.getId());
 
@@ -55,4 +51,6 @@ public class SJF {
     public boolean newTaskStarted() {
         return newTaskStarted;
     }
+
+
 }
